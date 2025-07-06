@@ -105,6 +105,7 @@ https://github.com/XIU2/CloudflareSpeedTest
 	flag.BoolVar(&utils.Debug, "debug", false, "调试输出模式")
 
 	flag.BoolVar(&printVersion, "v", false, "打印程序版本")
+	flag.BoolVar(&task.CertVerify, "cert", true, "证书校验")
 	flag.Usage = func() { fmt.Print(help) }
 	flag.Parse()
 

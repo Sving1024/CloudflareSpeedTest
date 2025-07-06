@@ -1,8 +1,8 @@
 package task
 
 import (
-	//"crypto/tls"
 	//"fmt"
+	"crypto/tls"
 	"io"
 	"log"
 	"net"
@@ -19,6 +19,7 @@ var (
 	HttpingCFColo     string
 	HttpingCFColomap  *sync.Map
 	ColoRegexp        = regexp.MustCompile(`[A-Z]{3}`)
+	CertVerify        bool
 )
 
 // pingReceived pingTotalTime
@@ -26,8 +27,8 @@ func (p *Ping) httping(ip *net.IPAddr) (int, time.Duration, string) {
 	hc := http.Client{
 		Timeout: time.Second * 2,
 		Transport: &http.Transport{
-			DialContext: getDialContext(ip),
-			//TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // 跳过证书验证
+			DialContext:     getDialContext(ip),
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: !CertVerify}, // 跳过证书验证
 		},
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			return http.ErrUseLastResponse // 阻止重定向
